@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,41 +33,46 @@ namespace MakersMarkt.Pages
 
         private async void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-                string username = UsernameInput.Text;
-                string email = EmailInput.Text;
-                string password = PasswordInput.Password;
+            string username = UsernameInput.Text;
+            string email = EmailInput.Text;
+            string password = PasswordInput.Password;
 
-                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
-                {
-                    await ShowDialog("Error", "All fields are required!", "OK");
-                    return;
-                }
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                await ShowDialog("Error", "All fields are required!", "OK");
+                return;
+            }
 
-                using (var db = new AppDbContext())
-                {
-                    var emailFound = db.Users.FirstOrDefault(u => u.Email == email);
-                    var userFound = db.Users.FirstOrDefault(u => u.Username == username);
-                    if (emailFound == null && userFound == null)
-                    {
-                        await ShowDialog("Error", "Email already registered!","OK");
-                        return;
-                    }
+            using var db = new AppDbContext();
 
-                    string hashedPassword = SecureHasher.Hash(password);
+            if (await db.Users.AnyAsync(u => u.Email == email))
+            {
+                await ShowDialog("Error", "Email already registered!", "OK");
+                return;
+            }
 
-                    User newUser = new User
-                    {
-                        Username = username,
-                        Email = email,
-                        Password = hashedPassword
-                    };
+            if (await db.Users.AnyAsync(u => u.Username == username))
+            {
+                await ShowDialog("Error", "Username already taken!", "OK");
+                return;
+            }
 
-                    db.Users.Add(newUser);
-                    await db.SaveChangesAsync();
+            string hashedPassword = SecureHasher.Hash(password);
 
-                    await ShowDialog("Success", "Registration successful!", "OK");
-                }
+            User newUser = new User
+            {
+                Username = username,
+                Email = email,
+                Password = hashedPassword
+            };
+
+            db.Users.Add(newUser);
+            await db.SaveChangesAsync();
+
+            await ShowDialog("Success", "Registration successful!", "OK");
+            Frame.Navigate(typeof(LoginPage));
         }
+
         private async Task ShowDialog(string title, string content, string closeButtonText)
         {
             ContentDialog dialog = new ContentDialog

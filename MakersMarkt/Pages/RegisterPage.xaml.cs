@@ -63,7 +63,8 @@ namespace MakersMarkt.Pages
             {
                 Username = username,
                 Email = email,
-                Password = hashedPassword
+                Password = hashedPassword,
+                Role_id = 1
             };
 
             db.Users.Add(newUser);

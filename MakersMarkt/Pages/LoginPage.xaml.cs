@@ -46,7 +46,7 @@ namespace MakersMarkt.Pages
                 var userFound = db.Users.FirstOrDefault(u => u.Username == username);
                 if (userFound == null)
                 {
-                    await ShowDialog("Error", "Email already registered!", "OK");
+                    await ShowDialog("Error", "User has not been found", "OK");
                     return;
                 }
 
@@ -54,6 +54,11 @@ namespace MakersMarkt.Pages
                 if (CheckPassword)
                 {
                     await ShowDialog("Success", "Login Successful!", "OK");
+                    Frame.Navigate(typeof(ProductsPage));
+                }
+                else
+                {
+                    await ShowDialog("Error", "Password is incorrect", "OK");
                 }
             }
         }

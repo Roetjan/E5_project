@@ -5,9 +5,131 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MakersMarkt.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:localdata="using:MakersMarkt.Classes"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="WhiteSmoke">
 
-    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Center"
+                Padding="5"
+                Orientation="Horizontal"
+                Margin="8,5,8,5">
+
+            <Button x:Name="ReturnButton"
+                Click="ReturnButton_Click"
+                Background="#DD47EE"
+                Foreground="White">
+                <Button.Content>
+                    <SymbolIcon Symbol="Back" />
+                </Button.Content>
+            </Button>
+            <TextBlock FontSize="28"
+                   Padding="10"
+                   VerticalAlignment="Center"
+                   FontWeight="SemiBold"
+                       Foreground="Black"
+                   Text="Alle Producten">
+            </TextBlock>
+
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="1"
+        Grid.Column="0" Grid.ColumnSpan="3" x:Name="XX">
+
+            <Grid>
+                <GridView x:Name="AllProdGridView"
+                    
+                    Margin="20, 5, 20, 20"
+                    MaxHeight="800">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="localdata:Product">
+                            <StackPanel Background="Black"
+                           Margin="2"
+                           Height="150"
+                           Width="150">
+                                <TextBlock Text="{x:Bind Name}" 
+                               Foreground="White"
+                               FontWeight="SemiBold"
+                               FontSize="15"
+                               TextWrapping="Wrap"
+                               Margin="9,7,9,3"/>
+                                <TextBlock Text="{x:Bind}"
+                               Foreground="#5847EE"
+                               FontSize="24"
+                               FontWeight="ExtraBlack"
+                               Margin="6,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Button x:Name="DeleteItemButton" 
+            Click="DeleteItemButton_Click"          
+            Background="#DD47EE"
+            Foreground="Black"
+            FontSize="18"
+            FontWeight="ExtraBold"
+            Height="45"
+            Width="45"
+            Margin="5,5,10,5"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Visibility="Collapsed">
+                <Button.Content>
+                    <SymbolIcon Symbol="Delete"/>
+                </Button.Content>
+            </Button>
+
+            <Button x:Name="Go2EditViewButton" 
+            Click="Go2EditViewButton_Click"     
+            Background="white"
+            Foreground="Black"
+            FontSize="18"
+            FontWeight="ExtraBold"
+            Height="45"
+            Width="45"    
+            Margin="5,5,10,5"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Visibility="Collapsed">
+                <Button.Content>
+                    <SymbolIcon Symbol="Edit"/>
+                </Button.Content>
+            </Button>
+
+            <Button x:Name="Go2CreateViewButton" 
+            Click="Go2CreateViewButton_Click" 
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"          
+            Background="#5847EE"
+            Foreground="Black"
+            FontSize="30"
+            FontWeight="ExtraBold"
+            Height="45"
+            Width="45"
+            Margin="5,5,10,10">
+                <Button.Content>
+                    <SymbolIcon Symbol="Add"/>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+    </Grid>
 </Page>
